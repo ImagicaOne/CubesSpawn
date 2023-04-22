@@ -8,7 +8,8 @@ public class RecoloringBehavior : MonoBehaviour
     private Color _nextColor;
     private Renderer _renderer;
 
-    private float _recoloringDuration = 10f;
+	[SerializeField]
+    private float _recoloringDuration;
     private float _recoloringTime;
 
     private void GenerateNextColor()
