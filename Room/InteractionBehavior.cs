@@ -27,13 +27,7 @@ public class InteractionBehavior : MonoBehaviour
             {
                 Door door = _hitInfo.collider.gameObject.GetComponent<Door>();
                 door.SwitchDoorState();
-            }
-
-            // look at the door and press mouse
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                ThrowAll();
-            }
+            }         
         }
 
         // _InteractiveItemsLayer processing
@@ -55,24 +49,19 @@ public class InteractionBehavior : MonoBehaviour
                     ThrowAll();
                 }
                 LiftItem();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                ThrowAll();
-            }
+            }          
         }
         else
         {
             if (_currentGameObject != null)
             {
                 ClearHighlighting(_currentGameObject);
-            }
+            }         
+        }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                ThrowAll();
-            }
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ThrowAll();
         }
     }
 
@@ -89,9 +78,9 @@ public class InteractionBehavior : MonoBehaviour
         InteractableItem[] allChildren = GetComponentsInChildren<InteractableItem>();
         foreach (InteractableItem child in allChildren)
         {
-            child.transform.SetParent(transform.Find("InteractableInventory"));
+            child.transform.SetParent(null);
             child.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            child.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 500);
+            child.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 2, ForceMode.Impulse);
         }
     }
 
