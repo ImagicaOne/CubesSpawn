@@ -13,21 +13,23 @@ public class InteractionBehavior : MonoBehaviour
 
     private GameObject _currentGameObject;
 
+    private int _distance = 5;
+
     void FixedUpdate()
     {
 
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f));
 
         // _doorsLayer processing
-        if (Physics.Raycast(ray, out _hitInfo, 3f, _doorsLayer))
+        if (Physics.Raycast(ray, out _hitInfo, _distance, _doorsLayer))
         {           
-            var doorObject = _hitInfo.collider.gameObject;
-            Debug.Log($"This is door {doorObject}");
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Door door = doorObject.GetComponent<Door>();
+                Door door = _hitInfo.collider.gameObject.GetComponent<Door>();
                 door.SwitchDoorState();
             }
+
+            // look at the door and press mouse
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 ThrowAll();
@@ -35,7 +37,7 @@ public class InteractionBehavior : MonoBehaviour
         }
 
         // _InteractiveItemsLayer processing
-        else if (Physics.Raycast(ray, out _hitInfo, 2f, _InteractiveItemsLayer))
+        if (Physics.Raycast(ray, out _hitInfo, _distance, _InteractiveItemsLayer))
         {            
             // if target goes from one object to another, unhighlight previous object
             if (_currentGameObject!= null && _currentGameObject != _hitInfo.collider.gameObject)
@@ -44,7 +46,6 @@ public class InteractionBehavior : MonoBehaviour
             }
 
             _currentGameObject = _hitInfo.collider.gameObject;
-            Debug.Log($"This is Interactive object {_currentGameObject}");
             Highlight(_currentGameObject);
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -53,9 +54,9 @@ public class InteractionBehavior : MonoBehaviour
                 {
                     ThrowAll();
                 }
-
                 LiftItem();
             }
+
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 ThrowAll();
@@ -63,7 +64,7 @@ public class InteractionBehavior : MonoBehaviour
         }
         else
         {
-            if (_currentGameObject != null) //&& _currentGameObject.GetComponent<InteractableItem>() != null)
+            if (_currentGameObject != null)
             {
                 ClearHighlighting(_currentGameObject);
             }
