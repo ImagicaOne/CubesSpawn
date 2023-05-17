@@ -14,7 +14,6 @@ public class LineController : MonoBehaviour
         positions.Add(_lineRenderer.GetPosition(0));
     }
 
-
     public void DrawLine()
     {
         StartCoroutine(Draw());

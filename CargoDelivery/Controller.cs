@@ -18,6 +18,7 @@ public class Controller : MonoBehaviour
     private BoxController _box;
 
     private bool drawingDone = false;
+    private bool deliveryDone = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,17 +29,19 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && drawingDone == false)
         {
-            drawingEvent.Invoke();
-            drawingDone = true;
+            drawingEvent.Invoke();          
         }
-        if (Input.GetMouseButtonUp(0) && drawingDone)
+        if (Input.GetMouseButtonUp(0) && deliveryDone == false)
         {
+            drawingDone = true;
             cargoEvent.Invoke();
+            deliveryDone = true;
+
         }
         if (_box.NeedToPut())
-        {
+        {           
             putEvent.Invoke();
         }
     }

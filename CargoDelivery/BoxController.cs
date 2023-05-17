@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using Obi;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BoxController : MonoBehaviour
 {
+    [SerializeField]
+    private UnityEvent _gameOverEvent;
+
+    [SerializeField]
+    private UnityEvent _gameWinEvent;
+
     [SerializeField]
     private GameObject _rope;
     [SerializeField] 
@@ -37,6 +44,7 @@ public class BoxController : MonoBehaviour
     {
         // Отцепляем ящик от веревки
         _ropeAttachment.enabled = false;
+        _gameOverEvent.Invoke();
     }
 
     // TODO: Вызовите данный метод, когда ящик на веревке окажется над финишной точкой 
@@ -57,6 +65,7 @@ public class BoxController : MonoBehaviour
 
         // Медленно двигаем ящик вниз
         StartCoroutine(DeliverToTarget(position));
+        _gameWinEvent.Invoke();
     }
     
     private IEnumerator DeliverToTarget(Vector3 targetPosition)
