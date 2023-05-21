@@ -31,7 +31,7 @@ public class Trajectory : MonoBehaviour
         {
             time = time + 0.1f;
             float x = initialSpeed * time * Mathf.Cos(angle);
-            float y = initialSpeed * time * Mathf.Sin(angle) - 9.81f * time * time / 2;
+            float y = initialSpeed * time * Mathf.Sin(angle) - Physics2D.gravity.magnitude * time * time / 2;
             sprite.transform.position = new Vector2(_skull.transform.position.x, _skull.transform.position.y) + new Vector2(x, y);
         }
     }  

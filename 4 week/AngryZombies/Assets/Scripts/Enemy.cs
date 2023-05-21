@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
             _changeZombieCount.Invoke();
+            return;
         }
     }
 
@@ -59,6 +60,7 @@ public class Enemy : MonoBehaviour
 
     private bool HasCriticalRotation()
     {
+        // its better to use rigitbody.rotation
         return Quaternion.Angle(_initialRotation, transform.rotation) > 30;
     }
 }

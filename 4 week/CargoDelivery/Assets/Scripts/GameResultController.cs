@@ -4,15 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class GameResultController : MonoBehaviour
 {
-    private void Update()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-
-    }
-
     public void OnGameOver()
     {
         gameObject.SetActive(true);

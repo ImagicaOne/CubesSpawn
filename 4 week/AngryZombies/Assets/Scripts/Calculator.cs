@@ -6,7 +6,8 @@ public static class Calculator
     public static float CalculateInitialSpeed(Vector2 direction)
     {
         Vector2 initialVectorSpeed = CalculateInitialSpeedVector(direction);
-        float initialSpeed = Mathf.Sqrt(initialVectorSpeed.x * initialVectorSpeed.x + initialVectorSpeed.y * initialVectorSpeed.y);
+        float initialSpeed = initialVectorSpeed.magnitude;
+            //Mathf.Sqrt(initialVectorSpeed.x * initialVectorSpeed.x + initialVectorSpeed.y * initialVectorSpeed.y);
         return initialSpeed;
     }
 

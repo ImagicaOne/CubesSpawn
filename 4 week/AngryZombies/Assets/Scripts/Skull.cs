@@ -33,6 +33,7 @@ public class Skull : MonoBehaviour
         var direction = new Vector2(_centerOfArea.transform.position.x, _centerOfArea.transform.position.y) - new Vector2(transform.position.x, transform.position.y);      
         var initialSpeed = Calculator.CalculateInitialSpeed(direction);
         _rg.isKinematic = false;
-        _rg.AddForce(direction.normalized * initialSpeed, ForceMode2D.Impulse);
+        // _rg.AddForce(direction.normalized * initialSpeed, ForceMode2D.Impulse);
+        _rg.AddForce(direction * 8, ForceMode2D.Impulse);
     }
 }

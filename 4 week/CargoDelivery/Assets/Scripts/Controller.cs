@@ -6,19 +6,19 @@ using UnityEngine.Events;
 public class Controller : MonoBehaviour
 {
     [SerializeField]
-    private UnityEvent drawingEvent;
+    private UnityEvent _drawingEvent;
 
     [SerializeField]
-    private UnityEvent cargoEvent;
+    private UnityEvent _cargoEvent;
 
     [SerializeField]
-    private UnityEvent putEvent;
+    private UnityEvent _putEvent;
 
     [SerializeField]
     private BoxController _box;
 
-    private bool drawingDone = false;
-    private bool deliveryDone = false;
+    private bool _drawingDone = false;
+    private bool _deliveryDone = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,20 +29,24 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && drawingDone == false)
+        if (Input.GetMouseButton(0) && _drawingDone == false)
         {
-            drawingEvent.Invoke();          
+            // LineController.DrawLine();
+            _drawingEvent.Invoke();          
         }
-        if (Input.GetMouseButtonUp(0) && deliveryDone == false)
+        if (Input.GetMouseButtonUp(0) && _deliveryDone == false)
         {
-            drawingDone = true;
-            cargoEvent.Invoke();
-            deliveryDone = true;
+            _drawingDone = true;
+            // RopeController.Move()
+            _cargoEvent.Invoke();
+            _deliveryDone = true;
 
         }
+
         if (_box.NeedToPut())
-        {           
-            putEvent.Invoke();
+        {       
+            // BoxController.DropDown()
+            _putEvent.Invoke();
         }
     }
 }
