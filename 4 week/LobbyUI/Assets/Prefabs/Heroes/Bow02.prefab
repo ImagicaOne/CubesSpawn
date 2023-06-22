@@ -10890,6 +10890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4846162242589798}
   - component: {fileID: 95696053887286524}
+  - component: {fileID: -3495217353824724402}
   m_Layer: 0
   m_Name: Bow02
   m_TagString: Untagged
@@ -10988,6 +10989,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3495217353824724402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911315358635904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 042e6c48f81346f47ae8b2abbb4884d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1920731997030702
 GameObject:
   m_ObjectHideFlags: 0

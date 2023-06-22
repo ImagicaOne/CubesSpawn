@@ -256,6 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4630395971456208431}
   - component: {fileID: 4690830139892754945}
+  - component: {fileID: -5190119001385368645}
   m_Layer: 0
   m_Name: NoWeapon01
   m_TagString: Untagged
@@ -354,6 +355,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5190119001385368645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631963978777973039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 042e6c48f81346f47ae8b2abbb4884d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4631967629009302705
 GameObject:
   m_ObjectHideFlags: 0

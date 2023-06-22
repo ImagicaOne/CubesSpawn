@@ -1245,6 +1245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4802723580168454}
   - component: {fileID: 95415220821254424}
+  - component: {fileID: 1093207258725685706}
   m_Layer: 0
   m_Name: SwordShield03
   m_TagString: Untagged
@@ -1343,6 +1344,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1093207258725685706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126199400621232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 042e6c48f81346f47ae8b2abbb4884d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1129380944076356
 GameObject:
   m_ObjectHideFlags: 0
