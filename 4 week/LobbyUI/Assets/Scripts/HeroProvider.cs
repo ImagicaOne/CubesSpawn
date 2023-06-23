@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HeroProvider : MonoBehaviour
@@ -10,7 +11,7 @@ public class HeroProvider : MonoBehaviour
 
     public Hero GetFirst()
     {
-        _heroes[0].gameObject.SetActive(true);
+        SetActive(_heroes[0], true);
         return _heroes[0];
     }
 
@@ -21,8 +22,6 @@ public class HeroProvider : MonoBehaviour
 
     public Hero GetNext()
     {
-        _heroes[_index].gameObject.SetActive(false);
-
         if  (_index == _heroes.Count - 1)
         {            
             _index = 0;
@@ -31,13 +30,11 @@ public class HeroProvider : MonoBehaviour
         {
            _index = _index + 1;
         }
-        _heroes[_index].gameObject.SetActive(true);
         return _heroes[_index];
     }
 
     public Hero GetPrevious()
     {
-        _heroes[_index].gameObject.SetActive(false);
         if (_index == 0)
         {
             _index = _heroes.Count - 1;
@@ -46,7 +43,6 @@ public class HeroProvider : MonoBehaviour
         {
             _index = _index - 1;
         }
-        _heroes[_index].gameObject.SetActive(true);
         return _heroes[_index];
     }
 
@@ -64,8 +60,18 @@ public class HeroProvider : MonoBehaviour
         hero.bought = true;
     }
 
-    public bool  IsBought(Hero hero)
+    public bool IsBought(Hero hero)
     {
         return hero.bought;
+    }
+
+    public Hero GetSelected()
+    {
+        return _heroes.First(h => h.selected);
+    }
+
+    public void SetActive(Hero hero, bool active)
+    {
+        hero.gameObject.SetActive(active);
     }
 }

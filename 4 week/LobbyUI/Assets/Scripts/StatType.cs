@@ -27,5 +27,8 @@ public enum StatType
     rating = 7,
 
     [Description("Hero price")]
-    price = 8
+    price = 8,
+
+    [Description("Hero icon")]
+    icon = 9
 }

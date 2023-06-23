@@ -19,6 +19,9 @@ public class Hero : MonoBehaviour
     private int _price;
 
     [SerializeField]
+    private Sprite _icon;
+
+    [SerializeField]
     private int _health;
     [SerializeField]
     private int _attack;
@@ -49,6 +52,8 @@ public class Hero : MonoBehaviour
                 return _rating;
             case StatType.price:
                 return _price;
+            case StatType.icon:
+                return _icon;
             default:
                 throw new ArgumentException("Stat type is not found!");
         }

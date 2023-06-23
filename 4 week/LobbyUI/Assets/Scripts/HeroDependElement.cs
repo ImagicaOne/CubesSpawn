@@ -14,15 +14,23 @@ public class HeroDependElement : MonoBehaviour
     {
         var textMesh = GetComponent<TextMeshProUGUI>();
         var slider = GetComponent<Slider>();
+        var image = GetComponent<Image>();
 
         if (textMesh != null)
         {
             textMesh.text = value.ToString();
             return;
         }
+
         if (slider != null)
         {
             slider.value = (int)value;
+            return;
+        }
+
+        if (image != null)
+        {
+            image.sprite = (Sprite)value;
             return;
         }
     }

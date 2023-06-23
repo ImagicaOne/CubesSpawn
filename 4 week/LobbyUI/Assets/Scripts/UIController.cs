@@ -45,6 +45,7 @@ public class UIController : MonoBehaviour
         }
 
         _hero = _heroProvider.GetFirst();
+        _heroProvider.SelectHero(_hero);
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
@@ -58,20 +59,26 @@ public class UIController : MonoBehaviour
     {
         SwitchScreen(true, false);
 
-        _hero = _heroProvider.GetFirst();
+        _heroProvider.SetActive(_hero, false);
+        _hero = _heroProvider.GetSelected();
+        _heroProvider.SetActive(_hero, true);
         LoadHeroData();
     }
 
     public void PressLeft()
     {
+        _heroProvider.SetActive(_hero, false);
         _hero = _heroProvider.GetPrevious();
+        _heroProvider.SetActive(_hero, true);
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
 
     public void PressRight()
     {
+        _heroProvider.SetActive(_hero, false);
         _hero = _heroProvider.GetNext();
+        _heroProvider.SetActive(_hero, true);
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
