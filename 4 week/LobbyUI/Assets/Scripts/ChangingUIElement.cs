@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //script for easy changing every UI element that need to change
-public class ChangingUIElement : MonoBehaviour
+public class HeroDependElement : MonoBehaviour
 {
     //specify the type of hero characteristic linked to this UI element
     [SerializeField]

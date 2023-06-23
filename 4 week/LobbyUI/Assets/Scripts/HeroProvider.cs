@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class HeroProvider : MonoBehaviour
@@ -49,5 +48,24 @@ public class HeroProvider : MonoBehaviour
         }
         _heroes[_index].gameObject.SetActive(true);
         return _heroes[_index];
+    }
+
+    public void SelectHero(Hero newSelectedHero)
+    {
+        foreach(var hero in _heroes)
+        {
+            hero.selected = false;
+        }
+        newSelectedHero.selected = true;
+    }
+
+    public void SetBought(Hero hero)
+    {
+        hero.bought = true;
+    }
+
+    public bool  IsBought(Hero hero)
+    {
+        return hero.bought;
     }
 }

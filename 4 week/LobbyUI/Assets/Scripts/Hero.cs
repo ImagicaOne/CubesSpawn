@@ -5,6 +5,7 @@ public class Hero : MonoBehaviour
 {
     //public bool isShowing;
     public bool bought;
+    public bool selected;
 
     [SerializeField]
     private string _name;
