@@ -35,8 +35,6 @@ public class UIController : MonoBehaviour
 
     private List<HeroDependElement> _heroDependElements = new List<HeroDependElement>();
 
-    private Hero _hero;
-
     public void Start()
     {
         foreach (var element in _choosingHeroCanvaces)
@@ -44,8 +42,7 @@ public class UIController : MonoBehaviour
             _heroDependElements.AddRange(element.GetComponentsInChildren<HeroDependElement>(false));
         }
 
-        _hero = _heroProvider.GetFirst();
-        _heroProvider.SelectHero(_hero);
+        _heroProvider.ShowFirst();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
@@ -59,33 +56,27 @@ public class UIController : MonoBehaviour
     {
         SwitchScreen(true, false);
 
-        _heroProvider.SetActive(_hero, false);
-        _hero = _heroProvider.GetSelected();
-        _heroProvider.SetActive(_hero, true);
+        _heroProvider.ShowSelected();
         LoadHeroData();
     }
 
     public void PressLeft()
     {
-        _heroProvider.SetActive(_hero, false);
-        _hero = _heroProvider.GetPrevious();
-        _heroProvider.SetActive(_hero, true);
+        _heroProvider.ShowPrevious();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
 
     public void PressRight()
     {
-        _heroProvider.SetActive(_hero, false);
-        _hero = _heroProvider.GetNext();
-        _heroProvider.SetActive(_hero, true);
+        _heroProvider.ShowNext();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
 
     public void ControlBuyButtonVisibility()
     {
-        if (_heroProvider.IsBought(_hero))
+        if (_heroProvider.IsBought())
         {
             _priceButton.gameObject.SetActive(false);
             _selectButton.GetComponent<Button>().interactable = true;
@@ -100,13 +91,13 @@ public class UIController : MonoBehaviour
 
     public void SelectHero()
     {
-        _heroProvider.SelectHero(_hero);
+        _heroProvider.SelectHero();
         SwitchScreen(true, false);
     }
 
     public void BuyHero()
     {
-        _heroProvider.SetBought(_hero);
+        _heroProvider.SetBought();
         _priceButton.gameObject.SetActive(false);
         var price = _priceButton.GetComponentInChildren<TextMeshProUGUI>();
         var money = _money.GetComponent<TextMeshProUGUI>();
@@ -118,7 +109,7 @@ public class UIController : MonoBehaviour
     {
         foreach (var element in _heroDependElements)
         {
-            element.Change(_hero.GetStat(element.statToChange));
+            element.Change(_heroProvider.GetCurrentHeroStat(element.statToChange));
         }
     }
 
