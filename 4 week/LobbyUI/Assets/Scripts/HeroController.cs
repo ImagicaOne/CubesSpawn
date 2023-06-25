@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class HeroProvider : MonoBehaviour
+public class HeroController : MonoBehaviour
 {
     [SerializeField]
     private List<Hero> _heroes = new List<Hero>();

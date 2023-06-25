@@ -31,7 +31,7 @@ public class UIController : MonoBehaviour
     private GameObject _money;
 
     [SerializeField]
-    private HeroProvider _heroProvider;
+    private HeroController _heroController;
 
     private List<HeroDependElement> _heroDependElements = new List<HeroDependElement>();
 
@@ -42,7 +42,7 @@ public class UIController : MonoBehaviour
             _heroDependElements.AddRange(element.GetComponentsInChildren<HeroDependElement>(false));
         }
 
-        _heroProvider.ShowFirst();
+        _heroController.ShowFirst();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
@@ -56,27 +56,27 @@ public class UIController : MonoBehaviour
     {
         SwitchScreen(true, false);
 
-        _heroProvider.ShowSelected();
+        _heroController.ShowSelected();
         LoadHeroData();
     }
 
     public void PressLeft()
     {
-        _heroProvider.ShowPrevious();
+        _heroController.ShowPrevious();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
 
     public void PressRight()
     {
-        _heroProvider.ShowNext();
+        _heroController.ShowNext();
         ControlBuyButtonVisibility();
         LoadHeroData();
     }
 
     public void ControlBuyButtonVisibility()
     {
-        if (_heroProvider.IsBought())
+        if (_heroController.IsBought())
         {
             _priceButton.gameObject.SetActive(false);
             _selectButton.GetComponent<Button>().interactable = true;
@@ -91,13 +91,13 @@ public class UIController : MonoBehaviour
 
     public void SelectHero()
     {
-        _heroProvider.SelectHero();
+        _heroController.SelectHero();
         SwitchScreen(true, false);
     }
 
     public void BuyHero()
     {
-        _heroProvider.SetBought();
+        _heroController.SetBought();
         _priceButton.gameObject.SetActive(false);
         var price = _priceButton.GetComponentInChildren<TextMeshProUGUI>();
         var money = _money.GetComponent<TextMeshProUGUI>();
@@ -109,7 +109,7 @@ public class UIController : MonoBehaviour
     {
         foreach (var element in _heroDependElements)
         {
-            element.Change(_heroProvider.GetCurrentHeroStat(element.statToChange));
+            element.Change(_heroController.GetCurrentHeroStat(element.statToChange));
         }
     }
 
