@@ -16,10 +16,10 @@ public class UIController : MonoBehaviour
     private Button _select;
 
     [SerializeField]
-    private GameObject[] _lobbyCanvaces;
+    private GameObject _lobbyCanvas;
 
     [SerializeField]
-    private GameObject[] _choosingHeroCanvaces;
+    private GameObject _choosingHeroCanvas;
 
     [SerializeField]
     private GameObject _priceButton;
@@ -37,10 +37,9 @@ public class UIController : MonoBehaviour
 
     public void Start()
     {
-        foreach (var element in _choosingHeroCanvaces)
-        {
-            _heroDependElements.AddRange(element.GetComponentsInChildren<HeroDependElement>(false));
-        }
+        
+        _heroDependElements.AddRange(_lobbyCanvas.GetComponentsInChildren<HeroDependElement>(false));
+        
 
         _heroController.ShowFirst();
         ControlBuyButtonVisibility();
@@ -115,13 +114,8 @@ public class UIController : MonoBehaviour
 
     private void SwitchScreen(bool first, bool second)
     {
-        foreach (var element in _lobbyCanvaces)
-        {
-            element.SetActive(first);
-        }
-        foreach (var element in _choosingHeroCanvaces)
-        {
-            element.SetActive(second);
-        }
+         _lobbyCanvas.SetActive(first);
+         _choosingHeroCanvas.SetActive(second);
+
     }
 }
