@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // On main canvac
-public class FieldController : MonoBehaviour
+public class MainController : MonoBehaviour
 {
     [SerializeField]
     private int _size = 3;
