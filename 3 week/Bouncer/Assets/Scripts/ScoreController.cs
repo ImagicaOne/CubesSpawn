@@ -1,42 +1,53 @@
 using System;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ScoreController : MonoBehaviour
 {
-    private TextMeshProUGUI[] _texts;
+    [SerializeField]
+    private UnityEvent<Color, int> _onScoreChange;
 
-    private void Awake()
-    {
-        _texts = GetComponentsInChildren<TextMeshProUGUI>();
-    }
+    [SerializeField]
+    private UnityEvent _onMoveChange;
 
-    public void IncreaseScore(Color color)
+    private ColorProvider _colorProvider;
+
+    private Dictionary<Color, int> _scores = new();
+
+
+    public void Initialize(ColorProvider colorsProvider)
     {
-        foreach (var text in _texts)
+        _colorProvider = colorsProvider;
+        var colors = _colorProvider.GetAllColors();
+
+        // Инициализируем словарь.
+        foreach (var color in colors)
         {
-            if (color == Color.white)
-            {
-                if (text.name.Contains("move", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    text.text = (Convert.ToInt32(text.text) + 1).ToString();
-                }              
-            }
-            else if (text.name.Contains(ColorProvider.GetColorName(color), StringComparison.InvariantCultureIgnoreCase))
-            {
-                text.text = (Convert.ToInt32(text.text) - 1).ToString();
-            }             
-        }    
+            _scores.Add(color, 0);
+        }
     }
 
     public void SetInitialScore(Color color)
     {
-        foreach (var text in _texts)
+        if (color != Color.white)
         {
-            if (text.name.Contains(ColorProvider.GetColorName(color), StringComparison.InvariantCultureIgnoreCase))
-            {
-                text.text = (Convert.ToInt32(text.text) + 1).ToString();
-            }
+            _onScoreChange.Invoke(color, 1);
         }
+          
     }
+
+    public void UpdateScore(Color color)
+    {
+        if (color != Color.white)
+        {
+            _onScoreChange.Invoke(color, -1);
+        }
+        else
+        {
+            _onMoveChange.Invoke();
+        }        
+        
+    }
+     
 }

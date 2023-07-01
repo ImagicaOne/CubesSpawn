@@ -2,17 +2,24 @@ using UnityEngine;
 
 public class SphereController : MonoBehaviour
 {
-    public void Initialize()
+    private ColorProvider _colorProvider;
+
+    private Vector3 _position => new Vector3(Random.Range(-8, 8), 0.65f, Random.Range(-8, 8));
+
+    private Renderer _renderer;
+
+    public void Initialize(ColorProvider colorProvider)
     {
-        var sphere = Instantiate(gameObject);
-        sphere.transform.position = new Vector3(Random.Range(-8, 8), 0.65f, Random.Range(-8, 8));
-        sphere.GetComponent<Renderer>().material.color = ColorProvider.GetRandomColor();
+        _colorProvider = colorProvider;
+        _renderer = GetComponent<Renderer>();
+        _renderer.material.color = _colorProvider.GetRandomColor();
+        transform.position = _position;       
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        collision.gameObject.GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
-        transform.position = new Vector3(Random.Range(-8, 8), 0.65f, Random.Range(-8, 8));
-        GetComponent<Renderer>().material.color = ColorProvider.GetRandomColor();
+        collision.gameObject.GetComponent<Renderer>().material.color = _renderer.material.color;
+        transform.position = _position;
+        _renderer.material.color = _colorProvider.GetRandomColor();
     }
 }

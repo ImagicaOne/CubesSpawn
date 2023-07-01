@@ -1,25 +1,38 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class CilinderController : MonoBehaviour
 {
-    public UnityEvent<Color> scoreEvent;
+    private ColorProvider _colorProvider;
 
-    public GameObject Initialize()
+    public Renderer Renderer;
+
+    private Action _cylinderDied;
+
+    private Vector3 _position => new Vector3(UnityEngine.Random.Range(-8, 8), 1.6825f, UnityEngine.Random.Range(-8, 8));  
+
+    public void Initialize(ColorProvider colorProvider, Action cylinderDied)
     {
-        var newCilinder = Instantiate(gameObject);
-        newCilinder.transform.position = new Vector3(Random.Range(-8, 8), 1.6825f, Random.Range(-8, 8));
-        newCilinder.GetComponent<Renderer>().material.color = ColorProvider.GetRandomColor();
-        return newCilinder;
+        _colorProvider = colorProvider;
+        Renderer = GetComponent<Renderer>();
+        Renderer.material.color = _colorProvider.GetRandomColor();
+        transform.position = _position;
+        _cylinderDied += cylinderDied;
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        var color = GetComponent<Renderer>().material.color;
-        if (color == collision.gameObject.GetComponent<Renderer>().material.color)
+        var player = collision.gameObject.GetComponent<CubeController>();
+        if (player != null)
         {
-            Destroy(gameObject);
-            scoreEvent.Invoke(color);
-        }
+            var color = Renderer.material.color;
+            if (color == collision.gameObject.GetComponent<Renderer>().material.color)
+            {
+                Destroy(gameObject);
+                _cylinderDied.Invoke();
+            }
+        }  
     }
 }

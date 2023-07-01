@@ -1,23 +1,18 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public static class ColorProvider
+[System.Serializable]
+public class ColorProvider
 {
-    private static Dictionary<string, Color> _colors = new Dictionary<string, Color>
-    { 
-        {"red", Color.red }, 
-        {"green", Color.green }, 
-        {"yellow", Color.yellow } 
-    };
+    [SerializeField]
+    private Color[] _colors;
 
-    public static Color GetRandomColor()
+    public Color GetRandomColor()
     {
-        return _colors.ElementAt(Random.Range(0, _colors.Count - 1)).Value;
+        return _colors[Random.Range(0, _colors.Length)];
     }
 
-    public static string GetColorName(Color color)
+    public Color[] GetAllColors()
     {
-        return _colors.First(x => x.Value == color).Key;
+        return _colors;
     }
 }

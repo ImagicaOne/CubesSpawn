@@ -1,15 +1,27 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class CubeController : MonoBehaviour
 {
-    public UnityEvent scoreEvent;
+    private Action _cubeMoved;
+
     private float _power = 10;
-    public GameObject Initialize()
+
+    private Vector3 _startPosition = new Vector3(0, 0.7f, 0);
+
+    private Rigidbody _rb;
+
+    public void Initialize(Action cubeMoved)
     {
-        var cube = Instantiate(gameObject);
-        cube.transform.position = new Vector3(0, 0.7f, 0);
-        return cube;
+        _rb = GetComponent<Rigidbody>();
+        transform.position = _startPosition;
+        _cubeMoved += cubeMoved;
+    }
+
+    public void MoveToStartPosition()
+    {
+        transform.position = _startPosition;
     }
 
     // Update is called once per frame
@@ -17,13 +29,13 @@ public class CubeController : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit _hitInfo;
-        if (Physics.Raycast(ray, out _hitInfo))
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Physics.Raycast(ray, out _hitInfo))
             {
-                GetComponent<Rigidbody>().AddForce((_hitInfo.point - transform.position).normalized * _power, ForceMode.Impulse);
-                scoreEvent.Invoke();
+                _rb.AddForce((_hitInfo.point - transform.position).normalized * _power, ForceMode.Impulse);
+                _cubeMoved.Invoke();
             }
-        }
+        }                
     }
 }

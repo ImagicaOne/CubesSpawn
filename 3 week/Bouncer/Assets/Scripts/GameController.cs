@@ -3,6 +3,9 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField]
+    private ColorProvider _colorProvider;
+
+    [SerializeField]
     private CilinderController _cilinder;
     [SerializeField]
     private CubeController _cube;
@@ -12,21 +15,29 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ScoreController _scoreController;
 
-    private int _cilindersCount = 6;
+    [SerializeField]
+    private ScoreView _scoreView;
+
+    [SerializeField]
+    private int _cylindersCount = 6;
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < _cilindersCount; i++)
+        _scoreController.Initialize(_colorProvider);
+        _scoreView.Initialize(_colorProvider);
+
+        for (int i = 0; i < _cylindersCount; i++)
         {
-            var newCilinder = _cilinder.Initialize();
-            newCilinder.GetComponent<CilinderController>().scoreEvent.AddListener((x) => _scoreController.IncreaseScore(newCilinder.GetComponent<Renderer>().material.color));
-            _scoreController.SetInitialScore(newCilinder.GetComponent<Renderer>().material.color);
+            var newCilinder = Instantiate(_cilinder);
+            newCilinder.Initialize(_colorProvider, () => _scoreController.UpdateScore(newCilinder.Renderer.material.color));
+             _scoreController.SetInitialScore(newCilinder.Renderer.material.color);
         }
 
-        var newCube = _cube.Initialize();
-        newCube.GetComponent<CubeController>().scoreEvent.AddListener(() => _scoreController.IncreaseScore(Color.white));
+        var newCube = Instantiate(_cube);
+        newCube.Initialize(() => _scoreController.UpdateScore(Color.white));
 
-        _sphere.Initialize();      
+        var newSphere = Instantiate(_sphere);
+        newSphere.Initialize(_colorProvider);
     }
 }
