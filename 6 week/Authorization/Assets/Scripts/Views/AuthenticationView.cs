@@ -8,8 +8,6 @@ namespace Views
 {
     public class AuthenticationView : MonoBehaviour
     {
-        private const string errorTitle = "Error message\r\n\r\n";
-        
         public event Action<MonoBehaviour, UserProfile> Authorized;
 
         [SerializeField] 
@@ -20,7 +18,7 @@ namespace Views
         private GameObject _preloader;
         
         [SerializeField] 
-        private GameObject _errorPopup;
+        private ErrorPopupView _errorPopup;
 
         public void Register()
         {
@@ -66,8 +64,8 @@ namespace Views
 
         private void OnError(int errorCode)
         {
-            var message = ErrorMessageProvider.Instance.GetErrorMessage(errorCode);
-            ShowErrorPopup(message);
+            HidePreloader();
+            _errorPopup.ShowMessage(errorCode);
         }
 
         private void ShowPreloader()
@@ -78,14 +76,6 @@ namespace Views
         private void HidePreloader()
         {
             _preloader.gameObject.SetActive(false);
-        }
-        
-        private void ShowErrorPopup(string message)
-        {
-            HidePreloader();
-            var textComponent = _errorPopup.GetComponentInChildren<TextMeshProUGUI>();
-            textComponent.text = errorTitle + message;
-            _errorPopup.gameObject.SetActive(true);
         }
     }
 }

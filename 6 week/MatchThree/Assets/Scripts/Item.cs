@@ -1,19 +1,37 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour, IEndDragHandler, IDragHandler
 {
-    public int Index => _index;
-
-    [SerializeField]
-    private int _index;
-
     public UnityEvent<Item> _onDragEvent;
+    
+    public int X { get; private set; }
+    
+    public int Y { get; private set; }
 
-    public void SetIndex(int index)
+    private SpriteRenderer _spriteRenderer;
+
+    private void Awake()
     {
-        _index = index;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        _spriteRenderer.sprite = sprite;
+    }
+    
+    public Sprite GetSprite()
+    {
+        return _spriteRenderer.sprite;
+    }
+    
+    public void SetIndex(int x, int y)
+    {
+        X = x;
+        Y = y;
     }
 
     public void OnEndDrag(PointerEventData eventData)
