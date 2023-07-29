@@ -1,6 +1,7 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ItemsReorderer : MonoBehaviour
 {
@@ -10,43 +11,14 @@ public class ItemsReorderer : MonoBehaviour
     [SerializeField]
     private ItemsSpawner _itemsSpawner;
     
+    [SerializeField]
+    private AnimationController _animationController;
+    
     private int _fieldSize;
-    
-    private UnityEvent<Item> _onRemove = new ();
-    
-    private UnityEvent<Action> _onRemoveComplete = new ();
-    
-    private UnityEvent<Item, Item> _onDrop = new ();
-    
-    private UnityEvent<Action> _onDropComplete = new ();
 
-    public void Initialize(int fieldSize, 
-        UnityAction<Item>[] onRemove, 
-        UnityAction<Action>[] onRemoveComplete,
-        UnityAction<Item, Item>[] onDrop,
-        UnityAction<Action>[] onDropComplete)
+    public void Initialize(int fieldSize)
     {
         _fieldSize = fieldSize;
-        
-        foreach (var action in onRemove)
-        {
-            _onRemove.AddListener(action);
-        }
-        
-        foreach (var action in onRemoveComplete)
-        {
-            _onRemoveComplete.AddListener(action);
-        }
-        
-        foreach (var action in onDrop)
-        {
-            _onDrop.AddListener(action);
-        }
-        
-        foreach (var action in onDropComplete)
-        {
-            _onDropComplete.AddListener(action);
-        }
     }
     
     public void SwapItems(Item item1, Item item2)
@@ -62,11 +34,8 @@ public class ItemsReorderer : MonoBehaviour
     
     private void RemoveItems(Item[] items)
     {
-        foreach (var item in items)
-        {
-            _onRemove.Invoke(item);
-        }
-        _onRemoveComplete.Invoke(() =>
+        _animationController.DecreaseScaleAnimation(items).OnComplete(
+        () =>
         {
             ClearSprites(items);
             DropItems();
@@ -79,18 +48,20 @@ public class ItemsReorderer : MonoBehaviour
         {
             //clear sprite
             item.SetSprite(null);
-
-            //return normal size after animation of removing sprite.
-            item.transform.localScale = new Vector3(1, 1, 0);
         }
     }
 
     private void DropItems()
     {
+        var size = 2;
+        List<(Item, Vector3)> itemsPositions = new ();
+        List<Item> itemsToSwap = new ();
+        
         for (int column = 0; column < _fieldSize; column++)
         {
             int count = 0;
-            for (int row = _fieldSize - 1; row >= 0 ; row--)
+
+            for (int row = _fieldSize - 1; row >= 0; row--)
             {
                 if (ItemsProvider.Instance.Items[row, column].GetSprite() == null)
                 {
@@ -98,30 +69,58 @@ public class ItemsReorderer : MonoBehaviour
                 }
                 else if (count > 0)
                 {
-                    SwapItems(ItemsProvider.Instance.Items[row, column],
-                        ItemsProvider.Instance.Items[row + count, column]);
-                    
-                    (ItemsProvider.Instance.Items[row, column].transform.position,
-                            ItemsProvider.Instance.Items[row + count, column].transform.position)
-                        = (ItemsProvider.Instance.Items[row + count, column].transform.position,
-                            ItemsProvider.Instance.Items[row, column].transform.position);
-                    
-                    /*_onDrop.Invoke(ItemsProvider.Instance.Items[row, column],
-                        ItemsProvider.Instance.Items[row + count, column]);
-                    _onDropComplete.Invoke();*/
+                    var x1 = ItemsProvider.Instance.Items[row, column].transform.position.x;
+                    var y1 = ItemsProvider.Instance.Items[row, column].transform.position.y;
+                    itemsPositions.Add((ItemsProvider.Instance.Items[row, column],
+                        new Vector3(x1,y1 - size * count)));
+
+                    ItemsProvider.Instance.Items[row, column].SetIndex(row + count, column);
+                    itemsToSwap.Add(ItemsProvider.Instance.Items[row, column]);
+
                 }
             }
         }
 
-        var matches = _matchProvider.GetAllMatches();
-        if (matches.Length > 0)
+        
+        for (int column = 0; column < _fieldSize; column++)
         {
-            RemoveItems(matches);
+            int count = 0;
+
+            for (int row = 0; row < _fieldSize; row++)
+            {
+                if (ItemsProvider.Instance.Items[row, column].GetSprite() != null)
+                {
+                    count++;
+                }
+                else if (count > 0)
+                {
+                    var x1 = ItemsProvider.Instance.Items[row, column].transform.position.x;
+                    var y1 = ItemsProvider.Instance.Items[row, column].transform.position.y;
+                    itemsPositions.Add((ItemsProvider.Instance.Items[row, column],
+                        new Vector3(x1, y1 + size * count)));
+                    
+                    ItemsProvider.Instance.Items[row, column].SetIndex(row - count, column);
+                    itemsToSwap.Add(ItemsProvider.Instance.Items[row, column]);
+                }
+            }
         }
-        else
+
+        _animationController.MoveSmoothly(itemsPositions.ToArray(), () =>
         {
-            _itemsSpawner.SetSprites();
-        }
+            foreach (var item in itemsToSwap)
+            {
+                ItemsProvider.Instance.Items[item.X, item.Y] = item;
+            }
+            var matches = _matchProvider.GetAllMatches();
+            if (matches.Length > 0)
+            {
+                RemoveItems(matches);
+            }
+            else
+            {
+                _itemsSpawner.SetSprites();
+            } 
+        });
     }
     
     private void SwapItemsIndexes(Item item1, Item item2)

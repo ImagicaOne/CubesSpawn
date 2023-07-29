@@ -1,17 +1,18 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour, IEndDragHandler, IDragHandler
 {
-    public UnityEvent<Item> _onDragEvent;
+     public UnityEvent<Item> DragEnded;
     
+     [field: SerializeField]
     public int X { get; private set; }
     
+    [field: SerializeField]
     public int Y { get; private set; }
 
-    private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class Item : MonoBehaviour, IEndDragHandler, IDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _onDragEvent.Invoke(this);       
+        DragEnded.Invoke(this);       
     }
 
     public void OnDrag(PointerEventData eventData)

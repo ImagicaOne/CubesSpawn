@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DragController : MonoBehaviour
 {
@@ -11,39 +10,18 @@ public class DragController : MonoBehaviour
     [SerializeField]
     private ItemsReorderer _itemsReorderer;
     
+    [SerializeField]
+    private AnimationController _animationController;
+    
     private int _fieldSize;
-    
-    private UnityEvent<Item, Item> _onSwap = new ();
-    
-    private UnityEvent<Action> _onSwapComplete = new ();
-    
-    private UnityEvent<Item, Item> _onSwapWithReturn = new ();
 
-    public void Initialize(int fieldSize, 
-        UnityAction<Item, Item>[] onSwap, 
-        UnityAction<Action>[] onSwapComplete,
-        UnityAction<Item, Item>[] onSwapWithReturn)
+    public void Initialize(int fieldSize)
     {
         _fieldSize = fieldSize;
         
         foreach (var item in ItemsProvider.Instance.Items)
         {
-            item._onDragEvent.AddListener(item => OnDragItem(item));
-        }
-        
-        foreach (var action in onSwap)
-        {
-            _onSwap.AddListener(action);
-        }
-        
-        foreach (var action in onSwapComplete)
-        {
-            _onSwapComplete.AddListener(action);
-        }
-        
-        foreach (var action in onSwapWithReturn)
-        {
-            _onSwapWithReturn.AddListener(action);
+            item.DragEnded.AddListener(item => OnDragItem(item));
         }
     }
     
@@ -59,13 +37,12 @@ public class DragController : MonoBehaviour
         var matches = _matchProvider.GetAllMatches();
         if (matches.Length > 0)
         {
-            _onSwap.Invoke(item, itemForSwap);
-            _onSwapComplete.Invoke(() => _itemsReorderer.HandleSwapWithMatches(matches));
+            _animationController.SwapSmoothly(item, itemForSwap, () => _itemsReorderer.HandleSwapWithMatches(matches));
         }
         else
         {
             _itemsReorderer.SwapItems(item, itemForSwap);
-            _onSwapWithReturn.Invoke(item, itemForSwap);
+            _animationController.SwapSmoothlyWithReturn(item, itemForSwap);
         }
     }
 
@@ -107,4 +84,5 @@ public class DragController : MonoBehaviour
 
         return neighbourItems.Where(i => i != null).ToArray();
     }
+    
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +8,7 @@ public class ItemsSpawner : MonoBehaviour
     private Transform _startPosition;
     
     [SerializeField]
-    private Tile _tilePrefab;
+    private GameObject _tilePrefab;
     
     [SerializeField]
     private Item _itemPrefab;
@@ -21,19 +22,15 @@ public class ItemsSpawner : MonoBehaviour
     [SerializeField]
     private MatchProvider _matchProvider;
     
-    private UnityEvent<Item> _onSpriteSet = new ();
+    [SerializeField]
+    private AnimationController _animationController;
 
     private int _fieldSize;
     
-    public void Initialize(int fieldSize, UnityAction<Item>[] onSpriteSet)
+    public void Initialize(int fieldSize)
     {
         _fieldSize = fieldSize;
-        
-        foreach (var action in onSpriteSet)
-        {
-            _onSpriteSet.AddListener(action);
-        }
-        
+
         SpawnGrid();
         SetSprites();
     }
@@ -75,10 +72,10 @@ public class ItemsSpawner : MonoBehaviour
                         item.SetSprite(_itemSpriteProvider.GetRandomSprite());
                     }
                     while (_matchProvider.GetAllMatches().Length > 0);
-                    
-                    _onSpriteSet.Invoke(item);
                 }
             }
         }
+        
+        _animationController.IncreaseScaleAnimation(ItemsProvider.Instance.Items.Cast<Item>().ToArray());
     }
 }

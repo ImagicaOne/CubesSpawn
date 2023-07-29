@@ -78,11 +78,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df2f34afd2d3b347bd7bd93484e5336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onDragEvent:
+  DragEnded:
     m_PersistentCalls:
       m_Calls: []
-  _x: 0
-  _y: 0
+  <X>k__BackingField: 0
+  <Y>k__BackingField: 0
 --- !u!222 &473485776196973730
 CanvasRenderer:
   m_ObjectHideFlags: 0
