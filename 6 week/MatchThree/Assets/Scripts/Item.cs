@@ -42,6 +42,7 @@ public class Item : MonoBehaviour, IEndDragHandler, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log("Someone is dragging me!");
         //I wondered why without this method dragging not working at all!?
     }
 }
