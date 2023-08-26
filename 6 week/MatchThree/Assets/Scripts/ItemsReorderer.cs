@@ -14,6 +14,9 @@ public class ItemsReorderer : MonoBehaviour
     [SerializeField]
     private AnimationController _animationController;
     
+    [SerializeField]
+    private SoundManager _soundManager;
+    
     private int _fieldSize;
 
     public void Initialize(int fieldSize)
@@ -34,6 +37,7 @@ public class ItemsReorderer : MonoBehaviour
     
     private void RemoveItems(Item[] items)
     {
+        _soundManager.PlayOnRemoving();
         _animationController.DecreaseScaleAnimation(items).OnComplete(
         () =>
         {
